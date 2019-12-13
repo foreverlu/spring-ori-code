@@ -37,6 +37,10 @@ import org.springframework.util.ObjectUtils;
  * @see RootBeanDefinition
  * @see ChildBeanDefinition
  */
+
+/**
+ * 开始学习spring源码了，从你开始吧。加油
+ */
 @SuppressWarnings("serial")
 public class GenericBeanDefinition extends AbstractBeanDefinition {
 

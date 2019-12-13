@@ -336,6 +336,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	@Override
 	public <T> T getBean(Class<T> requiredType, @Nullable Object... args) throws BeansException {
+		/**
+		 * 获取beanName
+		 */
 		NamedBeanHolder<T> namedBean = resolveNamedBean(requiredType, args);
 		if (namedBean != null) {
 			return namedBean.getBeanInstance();
@@ -389,12 +392,16 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		if (!isConfigurationFrozen() || type == null || !allowEagerInit) {
 			return doGetBeanNamesForType(ResolvableType.forRawClass(type), includeNonSingletons, allowEagerInit);
 		}
+		/**********************************************************************************************/
+		/** allBeanNamesByType 和 singletonBeanNameByType 是什么时候赋的值？？？？？*/
 		Map<Class<?>, String[]> cache =
 				(includeNonSingletons ? this.allBeanNamesByType : this.singletonBeanNamesByType);
 		String[] resolvedBeanNames = cache.get(type);
 		if (resolvedBeanNames != null) {
 			return resolvedBeanNames;
 		}
+		/********************************************************************************************/
+		/**ResolvableType是不是把类的一些信息拿出来了保存到一起，里面的注释叫压缩**/
 		resolvedBeanNames = doGetBeanNamesForType(ResolvableType.forRawClass(type), includeNonSingletons, true);
 		if (ClassUtils.isCacheSafe(type, getBeanClassLoader())) {
 			cache.put(type, resolvedBeanNames);
@@ -406,6 +413,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		List<String> result = new ArrayList<>();
 
 		// Check all bean definitions.
+		/**遍历beanDefinitionNames ,但是IndexService并不在其中**/
 		for (String beanName : this.beanDefinitionNames) {
 			// Only consider bean as eligible if the bean name
 			// is not defined as alias for some other bean.
@@ -989,6 +997,15 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	@Nullable
 	private <T> NamedBeanHolder<T> resolveNamedBean(Class<T> requiredType, @Nullable Object... args) throws BeansException {
 		Assert.notNull(requiredType, "Required type must not be null");
+		/**
+		 * 获取beanName
+		 *
+		 * 里面的逻辑还是比较复杂。
+		 * 如果没有在注解中设置beanName的话，
+		 * 会自动将类名首字母小写作为类名
+		 * 的逻辑就是在这个方法里面实现的
+		 *
+		 */
 		String[] candidateNames = getBeanNamesForType(requiredType);
 
 		if (candidateNames.length > 1) {

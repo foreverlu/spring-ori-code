@@ -203,6 +203,10 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		Assert.notNull(beanName, "Bean name must not be null");
 		synchronized (this.singletonObjects) {
 			Object singletonObject = this.singletonObjects.get(beanName);
+			/**
+			 * 一般来说初始化的时候就应该是null，
+			 * 这里为什么还要判断呢？
+			 */
 			if (singletonObject == null) {
 				if (this.singletonsCurrentlyInDestruction) {
 					throw new BeanCreationNotAllowedException(beanName,
