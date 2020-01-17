@@ -397,6 +397,13 @@ public abstract class StringUtils {
 	 * @param newPattern {@code String} to insert
 	 * @return a {@code String} with the replacements
 	 */
+	/**
+	 * 没有使用java提供的String.replace
+	 * 而是先用indexOf(pattern,fromIndex)方法先获取pattern的index
+	 * 然后将新的newPattern appends上去，再用pos+pattern的length
+	 * 再去找下一个pattern的位置。如此往复
+	 *
+	 */
 	public static String replace(String inString, String oldPattern, @Nullable String newPattern) {
 		if (!hasLength(inString) || !hasLength(oldPattern) || newPattern == null) {
 			return inString;

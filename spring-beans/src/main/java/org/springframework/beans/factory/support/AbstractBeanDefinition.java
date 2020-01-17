@@ -136,6 +136,17 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 */
 	public static final String INFER_METHOD = "(inferred)";
 
+	/*
+	BeanDefination包括了一下信息：
+	A package-qualified class name: typically, the actual implementation class of the bean being defined.
+
+	Bean behavioral configuration elements, which state how the bean should behave in the container (scope, lifecycle callbacks, and so forth).
+
+	References to other beans that are needed for the bean to do its work. These references are also called collaborators or dependencies.
+
+	Other configuration settings to set in the newly created object — for example, the size limit of the pool or the number of connections to use in a bean that manages a connection pool.
+	 */
+
 
 	@Nullable
 	private volatile Object beanClass;

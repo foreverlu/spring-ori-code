@@ -28,6 +28,7 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.core.type.classreading.MetadataReader#getClassMetadata()
  * @see AnnotationMetadata
  */
+//获取类信息
 public interface ClassMetadata {
 
 	/**

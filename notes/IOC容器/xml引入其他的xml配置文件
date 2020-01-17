@@ -1,0 +1,19 @@
+在xml配置文件中我们定义了bean，而且建议不同的业务模块写到不同的xml文件中
+我们可以通过将xml文件都引入到同一个xml。
+通过<import>元素来引入
+如下：
+
+`<beans>
+     <import resource="services.xml"/>
+     <import resource="resources/messageSource.xml"/>
+     <import resource="/resources/themeSource.xml"/>
+ 
+     <bean id="bean1" class="..."/>
+     <bean id="bean2" class="..."/>
+ </beans>`
+ 
+ 
+ - 需要注意的是：
+ The contents of the files being imported, including the top level <beans/> element, 
+ must be valid XML bean definitions, according to the Spring Schema.
+ 

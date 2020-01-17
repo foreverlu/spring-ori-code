@@ -49,6 +49,7 @@ public class AnnotatedBeanDefinitionReader {
 
 	private final BeanDefinitionRegistry registry;
 
+	//用于从注解上获取bean name
 	private BeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator();
 
 	private ScopeMetadataResolver scopeMetadataResolver = new AnnotationScopeMetadataResolver();
@@ -213,7 +214,13 @@ public class AnnotatedBeanDefinitionReader {
 	<T> void doRegisterBean(Class<T> annotatedClass, @Nullable Supplier<T> instanceSupplier, @Nullable String name,
 			@Nullable Class<? extends Annotation>[] qualifiers, BeanDefinitionCustomizer... definitionCustomizers) {
 
+		/*
+		   1. 设置beanClass
+		   2. AnnotatedGenericBeanDefinition 里面还有一个AnnotationMetadata对象
+		      实现是StandardAnnotationMetadata。
+		 */
 		AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(annotatedClass);
+
 		if (this.conditionEvaluator.shouldSkip(abd.getMetadata())) {
 			return;
 		}
@@ -221,6 +228,10 @@ public class AnnotatedBeanDefinitionReader {
 		abd.setInstanceSupplier(instanceSupplier);
 		ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(abd);
 		abd.setScope(scopeMetadata.getScopeName());
+
+		/**
+		 * 这个方法获取beanName
+		 */
 		String beanName = (name != null ? name : this.beanNameGenerator.generateBeanName(abd, this.registry));
 
 		AnnotationConfigUtils.processCommonDefinitionAnnotations(abd);

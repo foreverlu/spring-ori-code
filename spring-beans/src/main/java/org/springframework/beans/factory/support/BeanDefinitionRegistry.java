@@ -45,6 +45,7 @@ import org.springframework.core.AliasRegistry;
  * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader
  * @see PropertiesBeanDefinitionReader
  */
+/**定义了对beanDefinition的各种操作*/
 public interface BeanDefinitionRegistry extends AliasRegistry {
 
 	/**

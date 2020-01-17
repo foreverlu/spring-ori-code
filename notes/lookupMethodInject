@@ -1,0 +1,40 @@
+#lookup method inject
+实现的方式有两种：
+一种是通过xml配置的方式
+
+    <bean id="myCommand" class="fiona.apple.AsyncCommand" scope="prototype">
+        <!-- inject dependencies here as required -->
+    </bean>
+    
+    <!-- commandProcessor uses statefulCommandHelper -->
+    <bean id="commandManager" class="fiona.apple.CommandManager">
+        <lookup-method name="createCommand" bean="myCommand"/>
+    </bean>
+
+另一种是通过@lookup("beanName")   //可不写beanName,通过返回值来自动判断
+
+这里只分析@lookup注解的情况
+首先讨论使用场景。
+当一个单例类型的对象里面用到了多元类型的对象。就不能够像单例引用代理那样，把对象作为一个属性
+再进行注入
+所以需要通过方法来注入来实现
+
+首先是方法的格式：
+<public|protected> [abstract] <return-type> theMethodName(no-arguments);
+
+1. 写一个抽象类，里面的抽象方法实现了方法注入
+
+    public abstract class CommandManager {
+    
+        public Object process(Object commandState) {
+            Command command = createCommand();
+            command.setState(commandState);
+            return command.execute();
+        }
+    
+        @Lookup("myCommand")
+        protected abstract Command createCommand();
+    }
+    
+2. 看这个包吧
+  C:\project\spring-framework\spring-cww-test\src\main\java\com\cww\lookupmethod

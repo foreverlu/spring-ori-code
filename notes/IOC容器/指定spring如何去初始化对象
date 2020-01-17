@@ -1,0 +1,42 @@
+# 如何指定spring去实例化对象？
+1. 使用构造器来实例化对象
+`<bean id="exampleBean" class="examples.ExampleBean"/>
+ 
+ <bean name="anotherExample" class="examples.ExampleBeanTwo"/>`
+ 
+2. 使用静态工厂方法
+ - 使用<factory-method>标签来定义类本身的工厂方法。这个静态方法要在这个类里面
+ 
+    <bean id="clientService"
+        class="examples.ClientService"
+        factory-method="createInstance"/>
+        
+    public class ClientService {
+        private static ClientService clientService = new ClientService();
+        private ClientService() {}
+    
+        public static ClientService createInstance() {
+            return clientService;
+        }
+    }
+    
+3. 使用工厂类的工厂方法
+
+    <bean id="serviceLocator" class="examples.DefaultServiceLocator">
+        <!-- inject any dependencies required by this locator bean -->
+    </bean>
+    
+    <!-- the bean to be created via the factory bean -->
+    <bean id="clientService"
+        factory-bean="serviceLocator"
+        factory-method="createClientServiceInstance"/>
+        
+        
+    public class DefaultServiceLocator {
+    
+        private static ClientService clientService = new ClientServiceImpl();
+    
+        public ClientService createClientServiceInstance() {
+            return clientService;
+        }
+    }

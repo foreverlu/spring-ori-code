@@ -164,6 +164,11 @@ public class ClassPathResource extends AbstractFileResolvingResource {
 	 * @see java.lang.ClassLoader#getResourceAsStream(String)
 	 * @see java.lang.Class#getResourceAsStream(String)
 	 */
+	/**
+	 * 这个是获取指定路径的inputStream的方法，可以学习一下
+	 * @return
+	 * @throws IOException
+	 */
 	@Override
 	public InputStream getInputStream() throws IOException {
 		InputStream is;

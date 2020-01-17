@@ -337,7 +337,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	@Override
 	public <T> T getBean(Class<T> requiredType, @Nullable Object... args) throws BeansException {
 		/**
-		 * 获取beanName
+		 * 获取beanName和bean实例，封装在了NamedBeanHolder里面
 		 */
 		NamedBeanHolder<T> namedBean = resolveNamedBean(requiredType, args);
 		if (namedBean != null) {
@@ -389,11 +389,12 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	@Override
 	public String[] getBeanNamesForType(@Nullable Class<?> type, boolean includeNonSingletons, boolean allowEagerInit) {
+
 		if (!isConfigurationFrozen() || type == null || !allowEagerInit) {
 			return doGetBeanNamesForType(ResolvableType.forRawClass(type), includeNonSingletons, allowEagerInit);
 		}
 		/**********************************************************************************************/
-		/** allBeanNamesByType 和 singletonBeanNameByType 是什么时候赋的值？？？？？*/
+		/** allBeanNamesByType 和 singletonBeanNamesByType 是缓存，生成过的就直接从里面去取*/
 		Map<Class<?>, String[]> cache =
 				(includeNonSingletons ? this.allBeanNamesByType : this.singletonBeanNamesByType);
 		String[] resolvedBeanNames = cache.get(type);
@@ -467,7 +468,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 
 		// Check manually registered singletons too.
-		for (String beanName : this.manualSingletonNames) {
+		for (String beanName : this.manualSingletonNames)
+		{
 			try {
 				// In case of FactoryBean, match object created by FactoryBean.
 				if (isFactoryBean(beanName)) {
@@ -491,7 +493,6 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				}
 			}
 		}
-
 		return StringUtils.toStringArray(result);
 	}
 

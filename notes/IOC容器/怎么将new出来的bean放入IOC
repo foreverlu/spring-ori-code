@@ -1,0 +1,12 @@
+#怎么将new 出来的对象放入IOC容器中
+
+思路就是先获取到beanFactory，在调用beanFactory的registerSingleton方法
+
+
+    UserService userService = new UserService();
+		userService.i=10;
+		GenericApplicationContext gac = new GenericApplicationContext();
+		gac.refresh();
+		gac.getBeanFactory().registerSingleton("userService",userService);
+		UserService userService1 = gac.getBean("userService", UserService.class);
+		System.out.println(userService1.i);

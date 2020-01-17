@@ -49,6 +49,10 @@ import org.springframework.lang.Nullable;
  * @see ByteArrayResource
  * @see InputStreamResource
  */
+
+/**
+ * 抽象了所有spring内部使用到的底层资源，FILE，URL，ClassPath等
+ */
 public interface Resource extends InputStreamSource {
 
 	/**
@@ -160,6 +164,10 @@ public interface Resource extends InputStreamSource {
 	 * part of the path: for example, "myfile.txt".
 	 * <p>Returns {@code null} if this type of resource does not
 	 * have a filename.
+	 */
+	/**
+	 * 不带路径名
+	 * @return
 	 */
 	@Nullable
 	String getFilename();
