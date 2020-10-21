@@ -214,7 +214,7 @@ public class AnnotatedBeanDefinitionReader {
 	<T> void doRegisterBean(Class<T> annotatedClass, @Nullable Supplier<T> instanceSupplier, @Nullable String name,
 			@Nullable Class<? extends Annotation>[] qualifiers, BeanDefinitionCustomizer... definitionCustomizers) {
 
-		/*
+		/**
 		   1. 设置beanClass
 		   2. AnnotatedGenericBeanDefinition 里面还有一个AnnotationMetadata对象
 		      实现是StandardAnnotationMetadata。

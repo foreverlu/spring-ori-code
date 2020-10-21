@@ -121,12 +121,12 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 	protected static final Log logger = LogFactory.getLog(DataBinder.class);
 
 	@Nullable
-	private final Object target;
+	private final Object target;  //关联目标bean
 
-	private final String objectName;
+	private final String objectName; //目标bean名称
 
 	@Nullable
-	private AbstractPropertyBindingResult bindingResult;
+	private AbstractPropertyBindingResult bindingResult; //属性绑定结果
 
 	@Nullable
 	private SimpleTypeConverter typeConverter;

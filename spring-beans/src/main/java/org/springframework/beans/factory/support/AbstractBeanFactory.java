@@ -257,6 +257,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					logger.debug("Returning cached instance of singleton bean '" + beanName + "'");
 				}
 			}
+			/**
+			 * 这个方法处理的是FactoryBean，根据name是否是以&开头来判断，
+			 * 1。 如果不是以&开头，则为普通bean，如果sharedInstance不是factoryBean直接返回，如果是factoryBean，则调用getObject，获取bean
+			 * 2。如果以&开头，返回这个factoryBean
+			 *
+			 * 回调 postProcessAfterInitialization
+			 *
+			 */
 			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
 		}
 
@@ -271,6 +279,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			BeanFactory parentBeanFactory = getParentBeanFactory();
 			if (parentBeanFactory != null && !containsBeanDefinition(beanName)) {
 				// Not found -> check parent.
+				//还原beanname ,factorybean 加上&
 				String nameToLookup = originalBeanName(name);
 				if (parentBeanFactory instanceof AbstractBeanFactory) {
 					return ((AbstractBeanFactory) parentBeanFactory).doGetBean(
@@ -291,6 +300,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			try {
+				//BeanDefinition会转换成RootBeanDefinition 如果有parent，也会合并进来
 				final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
 				checkMergedBeanDefinition(mbd, beanName, args);
 
@@ -304,6 +314,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 						}
 						registerDependentBean(dep, beanName);
 						try {
+							//会先初始化dependsOn的bean
 							getBean(dep);
 						}
 						catch (NoSuchBeanDefinitionException ex) {
@@ -1626,7 +1637,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			Object beanInstance, String name, String beanName, @Nullable RootBeanDefinition mbd) {
 
 		// Don't let calling code try to dereference the factory if the bean isn't a factory.
+		//以 '&' 开头的name会认为是factoryBean
 		if (BeanFactoryUtils.isFactoryDereference(name)) {
+			//NullBean是什么？？？？
 			if (beanInstance instanceof NullBean) {
 				return beanInstance;
 			}
