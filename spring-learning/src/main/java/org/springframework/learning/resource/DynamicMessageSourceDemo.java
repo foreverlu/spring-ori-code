@@ -27,7 +27,8 @@ import java.util.concurrent.Executors;
  * 1. 定位资源位置
  * 2. 初始化properties
  * 3. 实现resolveCode方法
- * 4. 文件监听  @see WatchService
+ * 4. 文件监听
+ * @see WatchService
  */
 public class DynamicMessageSourceDemo extends AbstractMessageSource implements ResourceLoaderAware {
 
@@ -67,9 +68,6 @@ public class DynamicMessageSourceDemo extends AbstractMessageSource implements R
 		} catch (IOException e) {
 			throw new RuntimeException();
 		}
-
-
-
 	}
 
 	private void processMessagePropertiesChanged(WatchService watchService) {
